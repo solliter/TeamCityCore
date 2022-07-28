@@ -2,7 +2,7 @@ Technology Used : Java, TestNG, Selenium, Maven, Allure
 
 Framework Used: Page Object Model
 
-Requirements: Browser Google Chrome ver.102.0.5005.63, TeamCity without projects.
+Requirements: Browser Google Chrome ver.102.0.5005.63, TeamCity without projects, windows 10.
 
 Before tests:
 in src/main/java/constants file Constants
