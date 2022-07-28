@@ -6,13 +6,12 @@ import org.awaitility.Awaitility;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
-import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.startsWith;
 
 public class Helpers extends BasePage {
     protected WebDriver driver;
@@ -29,13 +28,23 @@ public class Helpers extends BasePage {
 
     @Step("Checking text")
     public void checkText(WebElement elementsToFind, String elements){
-        waitElementIsVisible(elementsToFind);
-        assertThat(elementsToFind.getText(), is(elements)); }
+            waitElementIsVisible(elementsToFind);
+            Awaitility.given().ignoreException(AssertionError.class)
+                    .await().pollInterval(5, TimeUnit.MILLISECONDS).atMost(10, TimeUnit.SECONDS)
+                    .until(elementsToFind::getText, startsWith(elements)); }
 
-    @Step("Performing click on the page")
-    public void clickPage() throws AWTException {
-    Actions actions = new Actions(driver);
-    Robot robot = new Robot();
-    robot.mouseMove(50,50);
-    actions.click().build().perform();}
+
+   @Step("scroll down to element")
+    public void scrollToElement(WebElement element) throws InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        // This will scroll the page till the element is found
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+        Thread.sleep(600); }
+
+    @Step("Getting date and time")
+    public String dateTimeNow(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d MMM yy HH:mm");
+        LocalDateTime localDate = LocalDateTime.now();
+        return dtf.format(localDate); }
+
 }

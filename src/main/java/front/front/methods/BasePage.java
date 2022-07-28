@@ -23,6 +23,10 @@ public class BasePage {
         new WebDriverWait(driver, EXPLICIT_WAIT).until(ExpectedConditions.visibilityOf(element));
         return element;
     }
+    public By waitElementIsInvisible(By element){
+        new WebDriverWait(driver, EXPLICIT_WAIT).until(ExpectedConditions.invisibilityOfElementLocated(element));
+        return element;
+    }
 
     public WebElement waitElementClickable(WebElement element){
         new WebDriverWait(driver, EXPLICIT_WAIT).until(ExpectedConditions.elementToBeClickable(element));
